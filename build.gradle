@@ -14,7 +14,7 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
-
+maven { url 'https://jitpack.io' }
 allprojects {
     repositories {
         google()

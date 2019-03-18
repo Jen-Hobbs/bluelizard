@@ -1,0 +1,25 @@
+
+{
+  "version": 1,
+  "datasets": [
+    {
+      "name": "Accessible Public Washrooms",
+      "country": "CA",
+      "subdivision": "BC",
+      "region": "Metro Vancouver Regional District",
+      "city": "New Westminster",
+      "provider": "The Corporation of the City of New Westminster",
+      "id": "54a81d5bbad2ad67753c3b0fbc8ade08698b9b6d926a781e3bb66f9276600c9d",
+      "downloads": [
+        {
+          "src": "http://opendata.newwestcity.ca/downloads/accessible-public-washrooms/WASHROOMS.json",
+          "encoding": "utf8"
+        }
+      ],
+      "schema": "https://raw.githubusercontent.com/OpendataDeveloperNetwork/oden-schemas/master/schemas/Accessible%20Public%20Washrooms.json",
+      "converter": {
+        "src": "https://raw.githubusercontent.com/transmogrifierio/converters/master/CA/BC/Metro%20Vancouver%20Regional%20District/New%20Westminster/The%20Corporation%20of%20the%20City%20of%20New%20Westminster/Accessible-Public-Washrooom-JSON-JSON.js"
+      }
+    }
+  ]
+}

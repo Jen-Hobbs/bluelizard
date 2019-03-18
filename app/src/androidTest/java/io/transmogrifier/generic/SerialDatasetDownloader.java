@@ -1,0 +1,29 @@
+package io.transmogrifier.generic;
+
+import java.io.File;
+import java.io.IOException;
+
+import io.transmogrifier.AbstractDatasetDownloader;
+import io.transmogrifier.Manifest;
+
+public class SerialDatasetDownloader
+    extends AbstractDatasetDownloader<String>
+{
+    @Override
+    public void download(final String                 id,
+                         final Manifest.Dataset       dataset,
+                         final DatasetDownloadHandler handler)
+    {
+        try
+        {
+            final File[][] files;
+
+            files = download(dataset, handler);
+            handler.datasetDownloadSuccess(dataset, files[0][0], files[1]);
+        }
+        catch(final IOException ex)
+        {
+            handler.datasetDownloadFailed(dataset, ex);
+        }
+    }
+}
