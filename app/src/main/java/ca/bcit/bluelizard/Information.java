@@ -56,6 +56,7 @@ public class Information extends AppCompatActivity {
                 }
             }
         });
+    } // bracket added
 
         /**
          * Async task class to get json by making HTTP call
@@ -178,7 +179,7 @@ public class Information extends AppCompatActivity {
                         }
                     });
                 }
-                //return null;
+                return null; // return added
             }
 
 
@@ -198,7 +199,7 @@ public class Information extends AppCompatActivity {
                 //lv.setAdapter(adapter);
             }
         }
-        return null;
 
-    }//end OnCreate
+
+    //end OnCreate bracket deleted
 }//end Information
