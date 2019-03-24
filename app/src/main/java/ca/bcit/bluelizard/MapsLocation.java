@@ -29,6 +29,7 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
         GetOffleashJSON.AsyncResponseLeash{
 
     private GoogleMap mMap;
+    private ArrayList<Marker> marker;
     private Marker myMarker;
     private GetWashroomsJSON getWashroomsJSON;
     private GetPlaygroundsJSON getPlayGroundsJSON;
@@ -39,6 +40,7 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        marker = new ArrayList<>();
         setContentView(R.layout.activity_maps_location);
         long info = getIntent().getLongExtra("location", 0);
         Log.e("location", "hi");
@@ -199,6 +201,7 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
         for(int n = 0; n < washrooms.size(); n++) {
             Log.e("longitude", String.valueOf(getWashroomsJSON.getWashroomList().size()));
             myMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(washrooms.get(n).longitute, washrooms.get(n).lattitude)));
+            marker.add(myMarker);
             mMap.setOnMarkerClickListener(this);
         }
 
@@ -208,10 +211,11 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
         List<Playground> playgrounds = getPlayGroundsJSON.getPlaygroundList();
         LatLng newWest = new LatLng(49.193788,-122.9314024);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newWest, 13));
-        mMap.setOnMarkerClickListener(this);
         for(int n = 0; n < playgrounds.size(); n++) {
             Log.e("longitude", String.valueOf(getPlayGroundsJSON.getPlaygroundList().size()));
             myMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(playgrounds.get(n).longitude, playgrounds.get(n).latitude)));
+            marker.add(myMarker);
+            mMap.setOnMarkerClickListener(this);
         }
 
 
@@ -292,11 +296,18 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
-    public boolean onMarkerClick(final Marker marker){
-        if(marker.equals(myMarker)){
-            Log.e("marker started", String.valueOf(marker.getPosition()));
-            Intent intent = new Intent(MapsLocation.this, LocationInfo.class);
-            startActivity(intent);
+    public boolean onMarkerClick(final Marker mark){
+        Log.e("marker started", String.valueOf(mark.getPosition()));
+
+        for(int i = 0; i < marker.size(); i++) {
+            Log.e("mymarker started", String.valueOf(marker.get(i).getPosition()));
+
+            if (mark.equals(marker.get(i))) {
+                
+                Log.e("marker started", String.valueOf(mark.getPosition()));
+                Intent intent = new Intent(MapsLocation.this, LocationInfo.class);
+                startActivity(intent);
+            }
         }
 
 
