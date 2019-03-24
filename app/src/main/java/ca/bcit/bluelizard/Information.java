@@ -24,16 +24,9 @@ public class Information extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View v, int position, long l) {
-                if (position == 4) {
                     Intent intent = new Intent(v.getContext(), MapsLocation.class);
-                    intent.putExtra("location", "washroom");
+                    intent.putExtra("location", l);
                     startActivityForResult(intent, 0);
-                }
-                if (position == 1) {
-                    Intent intent = new Intent(v.getContext(), MapsLocation.class);
-                    intent.putExtra("location", "park");
-                    startActivityForResult(intent, 0);
-                }
             }
         });
         //getWashrooms();

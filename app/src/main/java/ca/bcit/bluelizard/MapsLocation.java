@@ -34,16 +34,20 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps_location);
-    //    String info = getIntent().getStringExtra("position");
-    //    Log.e("position", info);
+        long info = getIntent().getLongExtra("location", 0);
+        Log.e("location", "hi");
+        Log.e("location", String.valueOf(info));
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        getWashroomsJSON = new GetWashroomsJSON();
-        GetWashroomsJSON.GetWashrooms get = getWashroomsJSON.new GetWashrooms();
-        getWashroomsJSON.delegate = this;
-        get.execute();
+        if(info == 4) {
+            getWashroomsJSON = new GetWashroomsJSON();
+            GetWashroomsJSON.GetWashrooms get = getWashroomsJSON.new GetWashrooms();
+            getWashroomsJSON.delegate = this;
+            get.execute();
+        }
+
     }
 
 
