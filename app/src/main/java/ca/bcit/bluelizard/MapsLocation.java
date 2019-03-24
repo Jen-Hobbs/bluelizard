@@ -186,26 +186,10 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMarkerClickListener(this);
 
         /*
-        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-            @Override
-            public void onInfoWindowClick(Marker marker) {
-                Intent intent = new Intent(MapsLocation.this, LocationInfo.class);
-                startActivity(intent);
 
-
-            }
         });*/
     }
-    /*
-    final public void addMarkers(){
-        List<Washroom> washrooms = GetWashroomsJSON.getWashroomList();
-        LatLng[] points = new LatLng[washrooms.size()];
-        for(int n = 0; n < washrooms.size(); n++) {
-            points[n] = new LatLng(washrooms.get(n).lattitude, washrooms.get(n).longitute);
-        }
 
-    }
-*/
 
     public void processFinish(){
         List<Washroom> washrooms = getWashroomsJSON.getWashroomList();
@@ -214,21 +198,23 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
 
         for(int n = 0; n < washrooms.size(); n++) {
             Log.e("longitude", String.valueOf(getWashroomsJSON.getWashroomList().size()));
-            mMap.addMarker(new MarkerOptions().position(new LatLng(washrooms.get(n).longitute, washrooms.get(n).lattitude)));
+            myMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(washrooms.get(n).longitute, washrooms.get(n).lattitude)));
+            mMap.setOnMarkerClickListener(this);
         }
-        mMap.setOnMarkerClickListener(this);
+
+
     }
     public void processFinishPlayground(){
         List<Playground> playgrounds = getPlayGroundsJSON.getPlaygroundList();
         LatLng newWest = new LatLng(49.193788,-122.9314024);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newWest, 13));
-
+        mMap.setOnMarkerClickListener(this);
         for(int n = 0; n < playgrounds.size(); n++) {
             Log.e("longitude", String.valueOf(getPlayGroundsJSON.getPlaygroundList().size()));
-            mMap.addMarker(new MarkerOptions().position(new LatLng(playgrounds.get(n).longitude, playgrounds.get(n).latitude)));
+            myMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(playgrounds.get(n).longitude, playgrounds.get(n).latitude)));
         }
 
-        mMap.setOnMarkerClickListener(this);
+
     }
     public void processFinishLeash(){
         List<Park> park = getOffleashJSON.getParkList();
@@ -308,6 +294,7 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
     @Override
     public boolean onMarkerClick(final Marker marker){
         if(marker.equals(myMarker)){
+            Log.e("marker started", String.valueOf(marker.getPosition()));
             Intent intent = new Intent(MapsLocation.this, LocationInfo.class);
             startActivity(intent);
         }
