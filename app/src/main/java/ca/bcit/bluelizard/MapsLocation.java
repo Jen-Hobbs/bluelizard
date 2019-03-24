@@ -23,19 +23,27 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-public class MapsLocation extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MapsLocation extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GetWashroomsJSON.AsyncResponse {
 
     private GoogleMap mMap;
     private Marker myMarker;
-
+    private GetWashroomsJSON getWashroomsJSON;
+    public GoogleMap getMap(){
+        return mMap;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps_location);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        getWashroomsJSON = new GetWashroomsJSON();
+        GetWashroomsJSON.GetWashrooms get = getWashroomsJSON.new GetWashrooms();
+        getWashroomsJSON.delegate = this;
+        get.execute();
     }
 
 
@@ -52,6 +60,7 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+/*
         // Add a marker in Sydney and move the camera
         LatLng newWest = new LatLng(49.193788,-122.9314024);
         List<Double> location = new ArrayList<Double>();
@@ -116,10 +125,7 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
 						[ -122.90406701107361, 49.21131726041395 ],
 						[ -122.90299907265259, 49.21189067262306 ],
 						[ -122.90167911202795, 49.210838475275544 ]
-        */
-        GetWashroomsJSON test = new GetWashroomsJSON();
-        List t = test.getWashroomList();
-        Log.e("Check list", String.valueOf(test.getWashroomList().size()));
+
 
         double avgLat = 0;
         double avgLong = 0;
@@ -161,6 +167,28 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
 
             }
         });*/
+    }
+    /*
+    final public void addMarkers(){
+        List<Washroom> washrooms = GetWashroomsJSON.getWashroomList();
+        LatLng[] points = new LatLng[washrooms.size()];
+        for(int n = 0; n < washrooms.size(); n++) {
+            points[n] = new LatLng(washrooms.get(n).lattitude, washrooms.get(n).longitute);
+        }
+
+    }
+*/
+
+    public void processFinish(){
+        List<Washroom> washrooms = getWashroomsJSON.getWashroomList();
+        LatLng newWest = new LatLng(49.193788,-122.9314024);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newWest, 13));
+
+        for(int n = 0; n < washrooms.size(); n++) {
+            Log.e("longitude", String.valueOf(getWashroomsJSON.getWashroomList().size()));
+            mMap.addMarker(new MarkerOptions().position(new LatLng(washrooms.get(n).longitute, washrooms.get(n).lattitude)));
+        }
+
     }
     @Override
     public boolean onMarkerClick(final Marker marker){

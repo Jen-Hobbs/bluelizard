@@ -34,9 +34,11 @@ public class Information extends AppCompatActivity {
                 }
             }
         });
+        /*
         GetWashroomsJSON getWashroomsJSON = new GetWashroomsJSON();
         GetWashroomsJSON.GetWashrooms get = getWashroomsJSON.new GetWashrooms();
-
         get.execute();
+        Log.e("hello", "hi");
+        */
     } //end onCreate
 }//end Information
