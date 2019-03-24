@@ -18,9 +18,7 @@ public class GetWashroomsJSON {
     private ProgressDialog pDialog;
     // URL to get contacts JSON
     private static String SERVICE_URL = "http://opendata.newwestcity.ca/downloads/accessible-public-washrooms/WASHROOMS.json";
-    private ArrayList<Geometry> geometryList;
-    private ArrayList<Properties> propertiesList;
-    private ArrayList<Park> parkList;
+    private ArrayList<Washroom> washroomList;
 
     /**
      * Async task class to get json by making HTTP call
@@ -58,19 +56,30 @@ public class GetWashroomsJSON {
                         JSONObject temp = jsonArrayFeatures.getJSONObject(i);
                         //Geometry node is a JSON Object
                         JSONObject jsonObjGeometry = temp.getJSONObject("geometry");
-                        Log.e("Hello", "Did it work?");
                         JSONArray jsonArrayCoordinates = jsonObjGeometry.getJSONArray("coordinates");
+
                         List<Double> coordinates =  new ArrayList<Double>();
+
+                        //ADD ALL DOUBLES TO THE ARRAYLSIT AHHHH
                         for(int j = 0; j < jsonArrayCoordinates.length(); j++)
                         {
-                            JSONObject temp2 = jsonArrayCoordinates.getJSONObject(j);
-                            coordinates.add(temp2.getDouble(""));
+                            Double temp2 = jsonArrayCoordinates.getDouble(j);
+                            coordinates.add(temp2);
+                            Log.e("hi", temp2.toString());
                         }
-                        for(int k = 0; k < coordinates.size(); k++)
-                        {
 
-                            Log.e(coordinates.get(k).toString(), "hi");
-                        }
+                        //make new Washroom Objects
+                        WashroomGeometry wg = new WashroomGeometry();
+                        WashroomProperties wp = new WashroomProperties();
+                        Washroom washroom = new Washroom();
+
+                        //assign data to objects
+                        wg.setCoordinates(coordinates);
+                        washroom.setGeometry(wg);
+                        washroom.setProperties(wp);
+
+                        // adding contact to contact list
+                        washroomList.add(washroom);
                             /*
                             //Geometry
                             //String type = c.getString("type");
