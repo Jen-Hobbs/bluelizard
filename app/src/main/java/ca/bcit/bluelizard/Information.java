@@ -30,20 +30,14 @@ public class Information extends AppCompatActivity {
             }
         });
         //getWashrooms();
-        getParks();
+        //getParks();
     } //end onCreate
-
+/*
     private void getParks()
     {
         GetParksJSON getParksJSON = new GetParksJSON();
         GetParksJSON.GetParks getp = getParksJSON.new GetParks();
         getp.execute();
     }
-
-    private void getPlaygrounds()
-    {
-        GetPlaygroundsJSON getPlaygroundsJSON = new GetPlaygroundsJSON();
-        GetPlaygroundsJSON.GetPlaygrounds getPlay = getPlaygroundsJSON.new GetPlaygrounds();
-        getPlay.execute();
-    }
+    */
 }//end Information
