@@ -29,15 +29,7 @@ public class Information extends AppCompatActivity {
                     startActivityForResult(intent, 0);
             }
         });
-        //getWashrooms();
-        //getParks();
     } //end onCreate
-/*
-    private void getParks()
-    {
-        GetParksJSON getParksJSON = new GetParksJSON();
-        GetParksJSON.GetParks getp = getParksJSON.new GetParks();
-        getp.execute();
-    }
-    */
+
+
 }//end Information

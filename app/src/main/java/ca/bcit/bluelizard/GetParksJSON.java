@@ -14,6 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GetParksJSON {
+    public interface AsyncResponseParks {
+        void processFinishParks();
+    }
+    public AsyncResponseParks delegate = null;
     private String TAG = Information.class.getSimpleName();
     // URL to get contacts JSON
     private static String SERVICE_URL = "http://opendata.newwestcity.ca/downloads/parks/PARKS.json";
@@ -131,6 +135,7 @@ public class GetParksJSON {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
+            delegate.processFinishParks();
         }
     }
 

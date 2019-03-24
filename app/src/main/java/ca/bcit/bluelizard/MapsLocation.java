@@ -23,12 +23,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-public class MapsLocation extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GetWashroomsJSON.AsyncResponse, GetPlaygroundsJSON.AsyncPlayground{
+public class MapsLocation extends FragmentActivity implements OnMapReadyCallback,
+        GoogleMap.OnMarkerClickListener, GetWashroomsJSON.AsyncResponse, GetPlaygroundsJSON.AsyncPlayground, GetParksJSON.AsyncResponseParks{
 
     private GoogleMap mMap;
     private Marker myMarker;
     private GetWashroomsJSON getWashroomsJSON;
     private GetPlaygroundsJSON getPlayGroundsJSON;
+    private GetParksJSON getParksJSON;
 
 
     @Override
@@ -42,6 +44,12 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        if(info == 0){
+            getParksJSON = new GetParksJSON();
+            GetParksJSON.GetParks getp = getParksJSON.new GetParks();
+            getParksJSON.delegate = this;
+            getp.execute();
+        }
         if(info == 3) {
             getPlayGroundsJSON = new GetPlaygroundsJSON();
             GetPlaygroundsJSON.GetPlaygrounds get = getPlayGroundsJSON.new GetPlaygrounds();
@@ -211,12 +219,50 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
             mMap.addMarker(new MarkerOptions().position(new LatLng(playgrounds.get(n).longitude, playgrounds.get(n).latitude)));
         }
     }
+    public void processFinishParks(){
+        List<Park> park = getParksJSON.getParkList();
+        LatLng newWest = new LatLng(49.193788,-122.9314024);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newWest, 13));
+
+        for(int j = 0; j < park.size(); j++){
+            double avgLat = 0;
+            double avgLong = 0;
+            int count = 0;
+            for(int i = 0; i < park.get(j).coordinates.size(); i++){
+                ArrayList<LatLng> locations = new ArrayList<>();
+                for(int n = 0; n < park.get(j).coordinates.get(i).size(); n++){
+                    locations.add(new LatLng(park.get(j).coordinates.get(i).get(n).get(1), park.get(j).coordinates.get(i).get(n).get(0)));
+                    avgLong += park.get(j).coordinates.get(i).get(n).get(0);
+                    avgLat += park.get(j).coordinates.get(i).get(n).get(1);
+                    count++;
+                }
+                LatLng[] point = locations.toArray(new LatLng[locations.size()]);
+                mMap.addPolygon(
+
+                        new PolygonOptions().add(point).fillColor(0x55588266)
+                );
+            }
+            avgLong /= count;
+            avgLat /= count;
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(avgLat, avgLong), 13));
+            myMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(avgLat, avgLong)));
+            mMap.setOnMarkerClickListener(this);
+
+
+        }
+
+
+
+
+    }
     @Override
     public boolean onMarkerClick(final Marker marker){
         if(marker.equals(myMarker)){
             Intent intent = new Intent(MapsLocation.this, LocationInfo.class);
             startActivity(intent);
         }
+
+
         return false;
     }
 
