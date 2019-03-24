@@ -15,15 +15,14 @@ import java.util.List;
 
 public class GetWashroomsJSON {
     private String TAG = Information.class.getSimpleName();
-    private ProgressDialog pDialog;
     // URL to get contacts JSON
     private static String SERVICE_URL = "http://opendata.newwestcity.ca/downloads/accessible-public-washrooms/WASHROOMS.json";
-    private ArrayList<Washroom> washroomList;
+    private ArrayList<Washroom> washroomList = new ArrayList<>();
 
     /**
      * Async task class to get json by making HTTP call
      */
-    class GetContacts extends AsyncTask<Void, Void, Void> {
+    class GetWashrooms extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
@@ -65,78 +64,18 @@ public class GetWashroomsJSON {
                         {
                             Double temp2 = jsonArrayCoordinates.getDouble(j);
                             coordinates.add(temp2);
-                            Log.e("hi", temp2.toString());
+                            Log.e("value", temp2.toString());
                         }
 
-                        //make new Washroom Objects
-                        WashroomGeometry wg = new WashroomGeometry();
-                        WashroomProperties wp = new WashroomProperties();
+                        for(int k = 0; k < coordinates.size(); k++)
+                        {
+                            Log.e("local coordinates : ", coordinates.get(k).toString());
+                        }
+
                         Washroom washroom = new Washroom();
-
-                        //assign data to objects
-                        wg.setCoordinates(coordinates);
-                        washroom.setGeometry(wg);
-                        washroom.setProperties(wp);
-
-                        // adding contact to contact list
+                        washroom.lattitude = coordinates.get(0);
+                        washroom.longitute = coordinates.get(1);
                         washroomList.add(washroom);
-                            /*
-                            //Geometry
-                            //String type = c.getString("type");
-                            List<List<List<Double>>> coordinates = (List<List<List<Double>>>) c.get("coordinates");
-
-                            //Properties
-
-                            String strName = c.getString("StrName");
-                            String strNum = c.getString("strNum");
-                            int objectID = c.getInt("OBJECTID");
-                            String name = c.getString("Name");
-                            String category = c.getString("Category");
-                            String neighbourhood = c.getString("neighbourhood");
-                            String zoning = c.getString("Zoning");
-                            String zone_Category = c.getString("Zone_Category");
-                            String owner = c.getString("Owner");
-                            String surveyed = c.getString("Surveyed");
-                            double siteArea = c.getDouble("Site_Area");
-                            String relationship = c.getString("Relationship");
-                            double shapeLength = c.getDouble("SHAPE_Length");
-                            double shapeArea = c.getDouble("SHAPE_Area");
-
-                            //Park
-                            //String parkType = c.getString("type");
-
-                            // tmp hash map for single contact
-                            //Toon toon = new Toon();
-                            Geometry geometry = new Geometry();
-                            Properties properties = new Properties();
-                            Park park = new Park();
-
-
-                            // adding each child node to HashMap key => value
-                                //geometry
-                                geometry.setCoordinates(coordinates);
-                                //properties
-                                properties.setStrName(strName);
-                                properties.setStrNum(strNum);
-                                properties.setOBJECTID(objectID);
-                                properties.setName(name);
-                                properties.setCategory(category);
-                                properties.setNeighbourhood(neighbourhood);
-                                properties.setZoning(zoning);
-                                properties.setZone_Category(zone_Category);
-                                properties.setOwner(owner);
-                                properties.setSurveyed(surveyed);
-                                properties.setSite_Area(siteArea);
-                                properties.setRelationship(relationship);
-                                properties.setSHAPE_Length(shapeLength);
-                                properties.setSHAPE_Area(shapeArea);
-                                //park
-                                park.setGeometry(geometry);
-                                park.setProperties(properties);
-
-                            // adding contact to contact list
-                            parkList.add(park);
-                            */
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -146,7 +85,6 @@ public class GetWashroomsJSON {
             }
             return null; // return added
         }
-
 
         @Override
         protected void onPostExecute(Void result) {
@@ -160,4 +98,7 @@ public class GetWashroomsJSON {
         }
     }
 
+    public ArrayList<Washroom> getWashroomList() {
+        return washroomList;
+    }
 }
