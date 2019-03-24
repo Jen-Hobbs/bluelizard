@@ -90,106 +90,6 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-/*
-        // Add a marker in Sydney and move the camera
-        LatLng newWest = new LatLng(49.193788,-122.9314024);
-        List<Double> location = new ArrayList<Double>();
-        List<List<Double>> polygon = new ArrayList();
-        List<List<List<Double>>> multiPolygon = new ArrayList();
-     //1
-        location.add(-122.90167911202795);
-        location.add(49.210838475275544);
-        polygon.add(location);
-        location = new ArrayList();
-        location.add(-122.90108615046643);
-        location.add(49.211157364714765);
-        polygon.add(location);
-//2
-        location = new ArrayList();
-        location.add(-122.90108615046643);
-        location.add(49.211157364714765);
-        polygon.add(location);
-//3
-        location = new ArrayList();
-        location.add(-122.90119873560481);
-        location.add(49.2133490365784);
-        polygon.add(location);
-//4
-        location = new ArrayList();
-        location.add(-122.90169404851203);
-        location.add(49.21394149278283);
-        polygon.add(location);
-//5
-        location = new ArrayList();
-        location.add(-122.90855629898924);
-        location.add(49.21939798924417);
-        polygon.add(location);
-//6
-        location = new ArrayList();
-        location.add(-122.91193355755044);
-        location.add(49.21757116319086);
-        polygon.add(location);
-        //7
-        location = new ArrayList();
-        location.add(-122.90406701107361);
-        location.add(49.21131726041395);
-        polygon.add(location);
-        //8
-        location = new ArrayList();
-        location.add(-122.90299907265259);
-        location.add(49.21189067262306);
-        polygon.add(location);
-        //9
-        location = new ArrayList();
-        location.add(-122.90167911202795);
-        location.add(49.210838475275544);
-        polygon.add(location);
-        multiPolygon.add(polygon);
-        /*
-             1  [ -122.90167911202795, 49.210838475275544 ],
-		    		[ -122.90108615046643, 49.211157364714765 ],
-						[ -122.90119873560481, 49.2133490365784 ],
-						[ -122.90169404851203, 49.21394149278283 ],
-						[ -122.90855629898924, 49.21939798924417 ],
-						[ -122.91193355755044, 49.21757116319086 ],
-						[ -122.90406701107361, 49.21131726041395 ],
-						[ -122.90299907265259, 49.21189067262306 ],
-						[ -122.90167911202795, 49.210838475275544 ]
-
-
-        double avgLat = 0;
-        double avgLong = 0;
-        int count = 0;
-
-
-        for(int i = 0; i < multiPolygon.size(); i++) {
-            ArrayList<LatLng> locations = new ArrayList<>();
-
-            for(int n = 0; n < multiPolygon.get(i).size(); n++) {
-
-                locations.add(new LatLng(multiPolygon.get(i).get(n).get(1),multiPolygon.get(i).get(n).get(0)));
-                avgLong += multiPolygon.get(i).get(n).get(0);
-                avgLat += multiPolygon.get(i).get(n).get(1);
-                count++;
-            }
-
-            LatLng[] point = locations.toArray(new LatLng[locations.size()]);
-            mMap.addPolygon(
-
-                    new PolygonOptions().add(point).fillColor(0x55588266)
-            );
-           // mMap.addMarker(new MarkerOptions().position(locations.get(0)));
-
-        }
-        avgLong /= count;
-        avgLat /= count;
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(avgLat, avgLong), 13));
-        myMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(avgLat, avgLong)));
-        mMap.setOnMarkerClickListener(this);
-
-        /*
-
-        });*/
     }
 
 
@@ -248,7 +148,8 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(avgLat, avgLong), 13));
             mMap.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener(){
                 public void onPolygonClick(Polygon polygon){
-                    Intent intent = new Intent(MapsLocation.this, LocationInfo.class);
+                    Intent intent = new Intent(MapsLocation.this, Details.class);
+                    intent.putExtra("area", polygon.getPoints().toArray());
                     startActivity(intent);
                 }
             });
@@ -281,7 +182,9 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(avgLat, avgLong), 13));
             mMap.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener(){
                 public void onPolygonClick(Polygon polygon){
-                    Intent intent = new Intent(MapsLocation.this, LocationInfo.class);
+                    Intent intent = new Intent(MapsLocation.this, Details.class);
+
+                    intent.putExtra("area", polygon.getPoints().toArray());
                     startActivity(intent);
                 }
             });
@@ -303,9 +206,9 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
             Log.e("mymarker started", String.valueOf(marker.get(i).getPosition()));
 
             if (mark.equals(marker.get(i))) {
-                
                 Log.e("marker started", String.valueOf(mark.getPosition()));
-                Intent intent = new Intent(MapsLocation.this, LocationInfo.class);
+                Intent intent = new Intent(MapsLocation.this, Details.class);
+                intent.putExtra("marker", mark.getPosition());
                 startActivity(intent);
             }
         }
