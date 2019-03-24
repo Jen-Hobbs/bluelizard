@@ -14,6 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GetOffleashJSON {
+    public interface AsyncResponseLeash {
+        void processFinishLeash();
+    }
+    public AsyncResponseLeash delegate = null;
     private String TAG = Information.class.getSimpleName();
     // URL to get contacts JSON
     private static String SERVICE_URL = "http://opendata.newwestcity.ca/downloads/off-leash-dog-areas/OFFLEASH_DOG_AREAS.json";
@@ -130,7 +134,9 @@ public class GetOffleashJSON {
 
         @Override
         protected void onPostExecute(Void result) {
+
             super.onPostExecute(result);
+            delegate.processFinishLeash();
         }
     }
 
