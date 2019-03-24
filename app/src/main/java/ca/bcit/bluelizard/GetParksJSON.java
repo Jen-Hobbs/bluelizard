@@ -50,7 +50,7 @@ public class GetParksJSON {
                         e.printStackTrace();
                     }
 
-                    // looping through All Contacts
+                    // looping through All features
                     for (int i = 0; i < jsonArrayFeatures.length(); i++) {
                         JSONObject temp = jsonArrayFeatures.getJSONObject(i);
                         //Geometry node is a JSON Object
@@ -61,8 +61,10 @@ public class GetParksJSON {
                         List<List<List<Double>>> crazyList = new ArrayList<>();
                         List<List<Double>> innerList = new ArrayList<>();
                         List<Double> innerInnerList = new ArrayList<>();
+
                         for(int a = 0; a < jsonArrayCoordinates.length(); a++)
                         {
+                            boolean isMultiple = false;
                             JSONArray jsonArrayCoordinatesInner = jsonArrayCoordinates.getJSONArray(a);
                             innerList = new ArrayList<>();
                             for(int b = 0; b < jsonArrayCoordinatesInner.length(); b++)
@@ -75,20 +77,22 @@ public class GetParksJSON {
                                         Log.e("coord1st", tempDouble.toString());
                                         innerInnerList.add(tempDouble);
                                     } else {
-                                        /*
-                                        for(int d = 0; d < jsonArrayCoordinatesInnerInner.length(); d++)
+                                        JSONArray jsonArrayCoordinatesInnerInnerInner = jsonArrayCoordinatesInnerInner.getJSONArray(c);
+                                        for(int d = 0; d < jsonArrayCoordinatesInnerInnerInner.length(); d++)
                                         {
-                                            JSONArray jsonArrayCoordinatesInnerInnerInner = jsonArrayCoordinatesInnerInner.getJSONArray(d);
+                                            isMultiple = true;
                                             Double tempDouble2 = jsonArrayCoordinatesInnerInnerInner.getDouble(d);
-                                            Log.e("coord1st", tempDouble2.toString());
+                                            Log.e("coord2nd", tempDouble2.toString());
                                             innerInnerList.add(tempDouble2);
+                                        }if(isMultiple) {
+                                            innerList.add(innerInnerList);
                                         }
-                                        innerList.add(innerInnerList);
-                                        */
                                     }//end else
                                 }//end for int c
-                                innerList.add(innerInnerList);
-                            }
+                                if(!isMultiple) {
+                                    innerList.add(innerInnerList);
+                                }
+                            }//end for int b
                             crazyList.add(innerList);
                         }
 
