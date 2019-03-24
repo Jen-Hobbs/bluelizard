@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 public class Details extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -19,6 +20,12 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
         SupportMapFragment mapFragment2 = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map2);
         mapFragment2.getMapAsync(this);
+        double[] lat = getIntent().getDoubleArrayExtra("latitude");
+        double[] lon = getIntent().getDoubleArrayExtra("longitude");
+        String type = getIntent().getStringExtra("type");
+
+
+
     }
 
     @Override

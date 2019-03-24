@@ -149,7 +149,16 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
             mMap.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener(){
                 public void onPolygonClick(Polygon polygon){
                     Intent intent = new Intent(MapsLocation.this, Details.class);
-                    intent.putExtra("area", polygon.getPoints().toArray());
+                    List<LatLng> latLngs = polygon.getPoints();
+                    double[] lat = new double[latLngs.size()];
+                    double[] lon = new double[latLngs.size()];
+                    for(int i = 0; i < latLngs.size(); i++){
+                        lat[i] = latLngs.get(i).latitude;
+                        lon[i] = latLngs.get(i).longitude;
+                    }
+                    intent.putExtra("latitude", lat);
+                    intent.putExtra("longitude", lon);
+                    intent.putExtra("type", "leash");
                     startActivity(intent);
                 }
             });
@@ -183,8 +192,16 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
             mMap.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener(){
                 public void onPolygonClick(Polygon polygon){
                     Intent intent = new Intent(MapsLocation.this, Details.class);
-
-                    intent.putExtra("area", polygon.getPoints().toArray());
+                    List<LatLng> latLngs = polygon.getPoints();
+                    double[] lat = new double[latLngs.size()];
+                    double[] lon = new double[latLngs.size()];
+                    for(int i = 0; i < latLngs.size(); i++){
+                        lat[i] = latLngs.get(i).latitude;
+                        lon[i] = latLngs.get(i).longitude;
+                    }
+                    intent.putExtra("latitude", lat);
+                    intent.putExtra("longitude", lon);
+                    intent.putExtra("type", "park");
                     startActivity(intent);
                 }
             });
@@ -208,7 +225,15 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
             if (mark.equals(marker.get(i))) {
                 Log.e("marker started", String.valueOf(mark.getPosition()));
                 Intent intent = new Intent(MapsLocation.this, Details.class);
-                intent.putExtra("marker", mark.getPosition());
+                List<LatLng> latLngs = new ArrayList<>();
+                double[] lat = new double[1];
+                double[] lon = new double[1];
+                lat[0] = mark.getPosition().latitude;
+                lon[0] = mark.getPosition().longitude;
+
+                intent.putExtra("latitude", lat);
+                intent.putExtra("longitude", lon);
+                intent.putExtra("type", "position");
                 startActivity(intent);
             }
         }
