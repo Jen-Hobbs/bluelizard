@@ -47,6 +47,7 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
             //marker.add(myMarker);
 
         }
+
         else{
             double avgLat = 0;
             double avgLong = 0;
@@ -54,15 +55,20 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback {
             LatLng[] point = new LatLng[lat.length];
             for (int i = 0; i < count; i++) {
                 point[i] = new LatLng(lat[i], lon[i]);
+                Log.e("latitiude of point poly", String.valueOf(lat[i]));
+                Log.e("longitude of point poly", String.valueOf(lon[i]));
                 avgLat += lat[i];
-                avgLong = lon[i];
+                avgLong += lon[i];
             }
             dMap.addPolygon(
-                    new PolygonOptions().add(point).fillColor(0x55588266).clickable(true)
+                    new PolygonOptions().add(point).fillColor(0x55588266)
             );
             avgLong /= count;
             avgLat /= count;
+            Log.e("latitiude of point poly", String.valueOf(avgLat));
+            Log.e("longitude of point poly", String.valueOf(avgLong));
             dMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(avgLat, avgLong), 13));
         }
+
     }
 }
