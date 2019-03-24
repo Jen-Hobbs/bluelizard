@@ -23,11 +23,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-public class MapsLocation extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GetWashroomsJSON.AsyncResponse {
+public class MapsLocation extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GetWashroomsJSON.AsyncResponse, GetPlaygroundsJSON.AsyncPlayground{
 
     private GoogleMap mMap;
     private Marker myMarker;
     private GetWashroomsJSON getWashroomsJSON;
+    private GetPlaygroundsJSON getPlayGroundsJSON;
 
 
     @Override
@@ -41,6 +42,12 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        if(info == 3) {
+            getPlayGroundsJSON = new GetPlaygroundsJSON();
+            GetPlaygroundsJSON.GetPlaygrounds get = getPlayGroundsJSON.new GetPlaygrounds();
+            getPlayGroundsJSON.delegate = this;
+            get.execute();
+        }
         if(info == 4) {
             getWashroomsJSON = new GetWashroomsJSON();
             GetWashroomsJSON.GetWashrooms get = getWashroomsJSON.new GetWashrooms();
@@ -193,6 +200,16 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
             mMap.addMarker(new MarkerOptions().position(new LatLng(washrooms.get(n).longitute, washrooms.get(n).lattitude)));
         }
 
+    }
+    public void processFinishPlayground(){
+        List<Playground> playgrounds = getPlayGroundsJSON.getPlaygroundList();
+        LatLng newWest = new LatLng(49.193788,-122.9314024);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newWest, 13));
+
+        for(int n = 0; n < playgrounds.size(); n++) {
+            Log.e("longitude", String.valueOf(getPlayGroundsJSON.getPlaygroundList().size()));
+            mMap.addMarker(new MarkerOptions().position(new LatLng(playgrounds.get(n).longitude, playgrounds.get(n).latitude)));
+        }
     }
     @Override
     public boolean onMarkerClick(final Marker marker){
