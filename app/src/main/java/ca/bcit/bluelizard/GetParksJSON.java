@@ -55,31 +55,42 @@ public class GetParksJSON {
                         JSONObject temp = jsonArrayFeatures.getJSONObject(i);
                         //Geometry node is a JSON Object
                         JSONObject jsonObjGeometry = temp.getJSONObject("geometry");
-                        /*
                         //Coordinates node is a JSON Array
                         JSONArray jsonArrayCoordinates = jsonObjGeometry.getJSONArray("coordinates");
-                        //store coordinates in a temporary ArrayList
-                        List<List<List<Double>>> coordinates =  new ArrayList<>();
-                        List<List<Double>> secondLevelList = new ArrayList<>();
-                        List<Double> thirdLevelList = new ArrayList<>();
+                        //There is a nested array
+                        List<List<List<Double>>> crazyList = new ArrayList<>();
+                        List<List<Double>> innerList = new ArrayList<>();
+                        List<Double> innerInnerList = new ArrayList<>();
                         for(int a = 0; a < jsonArrayCoordinates.length(); a++)
                         {
-                            JSONArray temp2 = jsonArrayCoordinates.getJSONArray(a);
-
-                            for(int b = 0; b < temp2.length(); b++)
+                            JSONArray jsonArrayCoordinatesInner = jsonArrayCoordinates.getJSONArray(a);
+                            innerList = new ArrayList<>();
+                            for(int b = 0; b < jsonArrayCoordinatesInner.length(); b++)
                             {
-                                Double temp3 = jsonArrayCoordinates.getDouble(b);
-                                thirdLevelList.add(temp3);
+                                JSONArray jsonArrayCoordinatesInnerInner = jsonArrayCoordinatesInner.getJSONArray(b);
+                                innerInnerList = new ArrayList<>();
+                                for(int c = 0; c < jsonArrayCoordinatesInnerInner.length(); c++) {
+                                    if(jsonArrayCoordinatesInnerInner.get(c) instanceof Double) {
+                                        Double tempDouble = jsonArrayCoordinatesInnerInner.getDouble(c);
+                                        Log.e("coord1st", tempDouble.toString());
+                                        innerInnerList.add(tempDouble);
+                                    } else {
+                                        /*
+                                        for(int d = 0; d < jsonArrayCoordinatesInnerInner.length(); d++)
+                                        {
+                                            JSONArray jsonArrayCoordinatesInnerInnerInner = jsonArrayCoordinatesInnerInner.getJSONArray(d);
+                                            Double tempDouble2 = jsonArrayCoordinatesInnerInnerInner.getDouble(d);
+                                            Log.e("coord1st", tempDouble2.toString());
+                                            innerInnerList.add(tempDouble2);
+                                        }
+                                        innerList.add(innerInnerList);
+                                        */
+                                    }//end else
+                                }//end for int c
+                                innerList.add(innerInnerList);
                             }
-
+                            crazyList.add(innerList);
                         }
-
-                        for(int j = 0; j < jsonArrayCoordinates.length(); j++)
-                        {
-                            Double temp2 = jsonArrayCoordinates.getDouble(j);
-                            coordinates.add(temp2);
-                        }
-                        */
 
                         //Properties node is a JSON Object
                         JSONObject jsonObjProperties = temp.getJSONObject("properties");
@@ -100,6 +111,7 @@ public class GetParksJSON {
                         //add data to washroom datamembers (lat, long)
                         park.name = name;
                         park.category = category;
+                        park.coordinates = crazyList;
                         //add washroom object to arrayList
                         parksList.add(park);
                     }
