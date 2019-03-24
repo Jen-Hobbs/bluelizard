@@ -3,6 +3,7 @@ package ca.bcit.bluelizard;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -35,7 +36,7 @@ public class Information extends AppCompatActivity {
         });
         GetWashroomsJSON getWashroomsJSON = new GetWashroomsJSON();
         GetWashroomsJSON.GetWashrooms get = getWashroomsJSON.new GetWashrooms();
-        get.execute();
 
+        get.execute();
     } //end onCreate
 }//end Information

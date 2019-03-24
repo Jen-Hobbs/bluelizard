@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -116,6 +117,9 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
 						[ -122.90299907265259, 49.21189067262306 ],
 						[ -122.90167911202795, 49.210838475275544 ]
         */
+        GetWashroomsJSON test = new GetWashroomsJSON();
+        List t = test.getWashroomList();
+        Log.e("Check list", String.valueOf(test.getWashroomList().size()));
 
         double avgLat = 0;
         double avgLong = 0;

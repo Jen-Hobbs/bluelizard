@@ -17,7 +17,7 @@ public class GetWashroomsJSON {
     private String TAG = Information.class.getSimpleName();
     // URL to get contacts JSON
     private static String SERVICE_URL = "http://opendata.newwestcity.ca/downloads/accessible-public-washrooms/WASHROOMS.json";
-    private ArrayList<Washroom> washroomList = new ArrayList<>();
+    private static ArrayList<Washroom> washroomList = new ArrayList<>();
 
     /**
      * Async task class to get json by making HTTP call
@@ -89,6 +89,7 @@ public class GetWashroomsJSON {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
+            Log.e("washroomlistsize" , String.valueOf(washroomList.size()));
             //Toon[] toonArray = toonList.toArray(new Toon[toonList.size()]);
 
             //ToonsAdapter adapter = new ToonsAdapter(MainActivity.this, toonList);
@@ -98,7 +99,7 @@ public class GetWashroomsJSON {
         }
     }
 
-    public ArrayList<Washroom> getWashroomList() {
+    public static ArrayList<Washroom> getWashroomList() {
         return washroomList;
     }
 }
