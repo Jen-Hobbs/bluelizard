@@ -28,6 +28,7 @@ public class GetWashroomsJSON {
     private static ArrayList<Washroom> washroomList = new ArrayList<>();
 
 
+
     /**
      * Async task class to get json by making HTTP call
      */
