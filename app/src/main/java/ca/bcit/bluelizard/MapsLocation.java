@@ -35,6 +35,7 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
     private GetPlaygroundsJSON getPlayGroundsJSON;
     private GetParksJSON getParksJSON;
     private GetOffleashJSON getOffleashJSON;
+    private String infoType;
 
 
     @Override
@@ -65,12 +66,14 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
             getPlayGroundsJSON = new GetPlaygroundsJSON();
             GetPlaygroundsJSON.GetPlaygrounds get = getPlayGroundsJSON.new GetPlaygrounds();
             getPlayGroundsJSON.delegate = this;
+            infoType = "playground";
             get.execute();
         }
         else if(info == 4) {
             getWashroomsJSON = new GetWashroomsJSON();
             GetWashroomsJSON.GetWashrooms get = getWashroomsJSON.new GetWashrooms();
             getWashroomsJSON.delegate = this;
+            infoType = "washroom";
             get.execute();
         }
 
@@ -233,7 +236,7 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
 
                 intent.putExtra("latitude", lat);
                 intent.putExtra("longitude", lon);
-                intent.putExtra("type", "position");
+                intent.putExtra("type", infoType);
                 startActivity(intent);
             }
         }
