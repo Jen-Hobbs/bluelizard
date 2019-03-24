@@ -6,10 +6,6 @@ import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,31 +13,24 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetWashroomsJSON {
-    public interface AsyncResponse {
-        void processFinish();
-    }
-    public AsyncResponse delegate = null;
+public class GetParksJSON {
     private String TAG = Information.class.getSimpleName();
     // URL to get contacts JSON
-    private static String SERVICE_URL = "http://opendata.newwestcity.ca/downloads/accessible-public-washrooms/WASHROOMS.json";
-    private static ArrayList<Washroom> washroomList = new ArrayList<>();
-
+    private static String SERVICE_URL = "http://opendata.newwestcity.ca/downloads/parks/PARKS.json";
+    private ArrayList<Park> parksList = new ArrayList<>();
 
     /**
      * Async task class to get json by making HTTP call
      */
-    class GetWashrooms extends AsyncTask<Void, Void, List<Washroom>> {
+    class GetParks extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            washroomList = new ArrayList<>();
-
         }
 
         @Override
-        protected List<Washroom> doInBackground(Void... arg0) {
+        protected Void doInBackground(Void... arg0) {
             HttpHandler sh = new HttpHandler();
 
             // Making a request to url and getting response
@@ -66,25 +55,53 @@ public class GetWashroomsJSON {
                         JSONObject temp = jsonArrayFeatures.getJSONObject(i);
                         //Geometry node is a JSON Object
                         JSONObject jsonObjGeometry = temp.getJSONObject("geometry");
+                        /*
                         //Coordinates node is a JSON Array
                         JSONArray jsonArrayCoordinates = jsonObjGeometry.getJSONArray("coordinates");
                         //store coordinates in a temporary ArrayList
-                        List<Double> coordinates =  new ArrayList<Double>();
+                        List<List<List<Double>>> coordinates =  new ArrayList<>();
+                        List<List<Double>> secondLevelList = new ArrayList<>();
+                        List<Double> thirdLevelList = new ArrayList<>();
+                        for(int a = 0; a < jsonArrayCoordinates.length(); a++)
+                        {
+                            JSONArray temp2 = jsonArrayCoordinates.getJSONArray(a);
 
-                        //ADD ALL DOUBLES TO THE ARRAYLSIT AHHHH
+                            for(int b = 0; b < temp2.length(); b++)
+                            {
+                                Double temp3 = jsonArrayCoordinates.getDouble(b);
+                                thirdLevelList.add(temp3);
+                            }
+
+                        }
+
                         for(int j = 0; j < jsonArrayCoordinates.length(); j++)
                         {
                             Double temp2 = jsonArrayCoordinates.getDouble(j);
                             coordinates.add(temp2);
                         }
+                        */
+
+                        //Properties node is a JSON Object
+                        JSONObject jsonObjProperties = temp.getJSONObject("properties");
+                            //Name node is a JSON Object
+                            String name = jsonObjProperties.getString("Name");
+                            //String name = jsonObjProperties.toString();
+                            Log.e("Parkname", name);
+
+                            //Category node is a JSON Object
+                            //JSONObject jsonObjCategory = jsonObjProperties.getJSONObject("Category");
+                            //String category = jsonObjCategory.toString();
+                            String category = jsonObjProperties.getString("Category");
+                            Log.e("Category", category);
+
 
                         //make new Washroom object
-                        Washroom washroom = new Washroom();
+                        Park park = new Park();
                         //add data to washroom datamembers (lat, long)
-                        washroom.lattitude = coordinates.get(0);
-                        washroom.longitute = coordinates.get(1);
+                        park.name = name;
+                        park.category = category;
                         //add washroom object to arrayList
-                        washroomList.add(washroom);
+                        parksList.add(park);
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -92,18 +109,16 @@ public class GetWashroomsJSON {
             } else {
                 Log.e(TAG, "Couldn't get json from server.");
             }
-            return washroomList; // return added
+            return null; // return added
         }
 
         @Override
-        protected void onPostExecute(List<Washroom> result) {
+        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            delegate.processFinish();
-            Log.e("washroom size", String.valueOf(result.size()));
         }
     }
 
-    public ArrayList<Washroom> getWashroomList() {
-        return washroomList;
+    public ArrayList<Park> getParkList() {
+        return parksList;
     }
 }

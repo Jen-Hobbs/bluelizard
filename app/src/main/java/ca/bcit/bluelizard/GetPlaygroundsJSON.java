@@ -1,14 +1,7 @@
 package ca.bcit.bluelizard;
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ListView;
-import android.widget.Toast;
-
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,31 +10,24 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetWashroomsJSON {
-    public interface AsyncResponse {
-        void processFinish();
-    }
-    public AsyncResponse delegate = null;
+public class GetPlaygroundsJSON {
     private String TAG = Information.class.getSimpleName();
     // URL to get contacts JSON
-    private static String SERVICE_URL = "http://opendata.newwestcity.ca/downloads/accessible-public-washrooms/WASHROOMS.json";
-    private static ArrayList<Washroom> washroomList = new ArrayList<>();
-
+    private static String SERVICE_URL = "http://opendata.newwestcity.ca/downloads/playgrounds/PLAYGROUNDS.json";
+    private ArrayList<Playground> playgroundList = new ArrayList<>();
 
     /**
      * Async task class to get json by making HTTP call
      */
-    class GetWashrooms extends AsyncTask<Void, Void, List<Washroom>> {
+    class GetPlaygrounds extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            washroomList = new ArrayList<>();
-
         }
 
         @Override
-        protected List<Washroom> doInBackground(Void... arg0) {
+        protected Void doInBackground(Void... arg0) {
             HttpHandler sh = new HttpHandler();
 
             // Making a request to url and getting response
@@ -66,25 +52,23 @@ public class GetWashroomsJSON {
                         JSONObject temp = jsonArrayFeatures.getJSONObject(i);
                         //Geometry node is a JSON Object
                         JSONObject jsonObjGeometry = temp.getJSONObject("geometry");
-                        //Coordinates node is a JSON Array
                         JSONArray jsonArrayCoordinates = jsonObjGeometry.getJSONArray("coordinates");
-                        //store coordinates in a temporary ArrayList
+
                         List<Double> coordinates =  new ArrayList<Double>();
 
                         //ADD ALL DOUBLES TO THE ARRAYLSIT AHHHH
+                        //Arraylist :)
                         for(int j = 0; j < jsonArrayCoordinates.length(); j++)
                         {
                             Double temp2 = jsonArrayCoordinates.getDouble(j);
                             coordinates.add(temp2);
                         }
 
-                        //make new Washroom object
-                        Washroom washroom = new Washroom();
-                        //add data to washroom datamembers (lat, long)
-                        washroom.lattitude = coordinates.get(0);
-                        washroom.longitute = coordinates.get(1);
-                        //add washroom object to arrayList
-                        washroomList.add(washroom);
+                        // Creating a new Playground object
+                        Playground playground = new Playground();
+                        playground.latitude = coordinates.get(0);
+                        playground.longitude = coordinates.get(1);
+                        playgroundList.add(playground);
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -92,18 +76,16 @@ public class GetWashroomsJSON {
             } else {
                 Log.e(TAG, "Couldn't get json from server.");
             }
-            return washroomList; // return added
+            return null; // return added
         }
 
         @Override
-        protected void onPostExecute(List<Washroom> result) {
+        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            delegate.processFinish();
-            Log.e("washroom size", String.valueOf(result.size()));
         }
     }
 
-    public ArrayList<Washroom> getWashroomList() {
-        return washroomList;
+    public ArrayList<Playground> getPlaygroundList() {
+        return playgroundList;
     }
 }
