@@ -6,6 +6,10 @@ import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,23 +18,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GetWashroomsJSON {
+    public interface AsyncResponse {
+        void processFinish();
+    }
+    public AsyncResponse delegate = null;
     private String TAG = Information.class.getSimpleName();
     // URL to get contacts JSON
     private static String SERVICE_URL = "http://opendata.newwestcity.ca/downloads/accessible-public-washrooms/WASHROOMS.json";
-    private ArrayList<Washroom> washroomList = new ArrayList<>();
+    private static ArrayList<Washroom> washroomList = new ArrayList<>();
+
+
 
     /**
      * Async task class to get json by making HTTP call
      */
-    class GetWashrooms extends AsyncTask<Void, Void, Void> {
+    class GetWashrooms extends AsyncTask<Void, Void, List<Washroom>> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            washroomList = new ArrayList<>();
+
         }
 
         @Override
-        protected Void doInBackground(Void... arg0) {
+        protected List<Washroom> doInBackground(Void... arg0) {
             HttpHandler sh = new HttpHandler();
 
             // Making a request to url and getting response
@@ -81,12 +93,14 @@ public class GetWashroomsJSON {
             } else {
                 Log.e(TAG, "Couldn't get json from server.");
             }
-            return null; // return added
+            return washroomList; // return added
         }
 
         @Override
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(List<Washroom> result) {
             super.onPostExecute(result);
+            delegate.processFinish();
+            Log.e("washroom size", String.valueOf(result.size()));
         }
     }
 

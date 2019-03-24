@@ -102,16 +102,16 @@ public class GetParksJSON {
 
                         //Properties node is a JSON Object
                         JSONObject jsonObjProperties = temp.getJSONObject("properties");
-                            //Name node is a JSON Object
-                            String name = jsonObjProperties.getString("Name");
-                            //String name = jsonObjProperties.toString();
-                            Log.e("Parkname", name);
+                        //Name node is a JSON Object
+                        String name = jsonObjProperties.getString("Name");
+                        //String name = jsonObjProperties.toString();
+                        Log.e("Parkname", name);
 
-                            //Category node is a JSON Object
-                            //JSONObject jsonObjCategory = jsonObjProperties.getJSONObject("Category");
-                            //String category = jsonObjCategory.toString();
-                            String category = jsonObjProperties.getString("Category");
-                            Log.e("Category", category);
+                        //Category node is a JSON Object
+                        //JSONObject jsonObjCategory = jsonObjProperties.getJSONObject("Category");
+                        //String category = jsonObjCategory.toString();
+                        String category = jsonObjProperties.getString("Category");
+                        Log.e("Category", category);
 
 
                         //make new Washroom object
