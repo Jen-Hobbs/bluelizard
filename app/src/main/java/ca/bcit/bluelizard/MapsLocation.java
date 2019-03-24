@@ -1,5 +1,6 @@
 package ca.bcit.bluelizard;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -20,9 +22,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-public class MapsLocation extends FragmentActivity implements OnMapReadyCallback {
+public class MapsLocation extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
+    private Marker myMarker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,5 +144,27 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
         avgLong /= count;
         avgLat /= count;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(avgLat, avgLong), 13));
+        myMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(avgLat, avgLong)));
+        mMap.setOnMarkerClickListener(this);
+
+        /*
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Intent intent = new Intent(MapsLocation.this, LocationInfo.class);
+                startActivity(intent);
+
+
+            }
+        });*/
     }
+    @Override
+    public boolean onMarkerClick(final Marker marker){
+        if(marker.equals(myMarker)){
+            Intent intent = new Intent(MapsLocation.this, LocationInfo.class);
+            startActivity(intent);
+        }
+        return false;
+    }
+
 }
