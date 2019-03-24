@@ -13,6 +13,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -215,7 +216,7 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
             Log.e("longitude", String.valueOf(getWashroomsJSON.getWashroomList().size()));
             mMap.addMarker(new MarkerOptions().position(new LatLng(washrooms.get(n).longitute, washrooms.get(n).lattitude)));
         }
-
+        mMap.setOnMarkerClickListener(this);
     }
     public void processFinishPlayground(){
         List<Playground> playgrounds = getPlayGroundsJSON.getPlaygroundList();
@@ -226,6 +227,8 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
             Log.e("longitude", String.valueOf(getPlayGroundsJSON.getPlaygroundList().size()));
             mMap.addMarker(new MarkerOptions().position(new LatLng(playgrounds.get(n).longitude, playgrounds.get(n).latitude)));
         }
+
+        mMap.setOnMarkerClickListener(this);
     }
     public void processFinishLeash(){
         List<Park> park = getOffleashJSON.getParkList();
@@ -246,22 +249,25 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
                 }
                 LatLng[] point = locations.toArray(new LatLng[locations.size()]);
                 mMap.addPolygon(
-
-                        new PolygonOptions().add(point).fillColor(0x55588266)
+                        new PolygonOptions().add(point).fillColor(0x55588266).clickable(true)
                 );
+
             }
             avgLong /= count;
             avgLat /= count;
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(avgLat, avgLong), 13));
-            myMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(avgLat, avgLong)));
-            mMap.setOnMarkerClickListener(this);
+            mMap.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener(){
+                public void onPolygonClick(Polygon polygon){
+                    Intent intent = new Intent(MapsLocation.this, LocationInfo.class);
+                    startActivity(intent);
+                }
+            });
         }
     }
     public void processFinishParks(){
         List<Park> park = getParksJSON.getParkList();
         LatLng newWest = new LatLng(49.193788,-122.9314024);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newWest, 13));
-
         for(int j = 0; j < park.size(); j++){
             double avgLat = 0;
             double avgLong = 0;
@@ -276,15 +282,20 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
                 }
                 LatLng[] point = locations.toArray(new LatLng[locations.size()]);
                 mMap.addPolygon(
-
-                        new PolygonOptions().add(point).fillColor(0x55588266)
+                        new PolygonOptions().add(point).fillColor(0x55588266).clickable(true)
                 );
+
             }
             avgLong /= count;
             avgLat /= count;
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(avgLat, avgLong), 13));
-            myMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(avgLat, avgLong)));
-            mMap.setOnMarkerClickListener(this);
+            mMap.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener(){
+                public void onPolygonClick(Polygon polygon){
+                    Intent intent = new Intent(MapsLocation.this, LocationInfo.class);
+                    startActivity(intent);
+                }
+            });
+
 
 
         }
