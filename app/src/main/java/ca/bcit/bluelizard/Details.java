@@ -64,12 +64,16 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback, Ge
             @Override
             public void onItemClick(AdapterView<?> adapterView, View v, int position, long l) {
                 if (position == 0) {
+                    clearSelected();
                     parksSelected();
                 } else if (position == 1) {
+                    clearSelected();
                     leashSelected();
                 } else if (position == 3) {
+                    clearSelected();
                     playSelected();
                 } else if (position == 4) {
+                    clearSelected();
                     washroomSelected();
                 } else if (position == 5) {
                     fountainsSelected();
@@ -82,6 +86,16 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback, Ge
     @Override
     public void onMapReady(GoogleMap map) {
         dMap = map;
+        clearSelected();
+        //parksSelected();
+        //leashSelected();
+        //playSelected();
+        //washroomSelected();
+        //fountainsSelected();
+    }
+
+    public void clearSelected(){
+        dMap.clear();
         if(lat.length == 1){
             dMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat[0], lon[0]), 15));
             //Log.e("longitude", String.valueOf(getPlayGroundsJSON.getPlaygroundList().size()));
@@ -112,13 +126,7 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback, Ge
             dMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(avgLat, avgLong), 14));
 
         }
-        //parksSelected();
-        //leashSelected();
-        //playSelected();
-        //washroomSelected();
-        //fountainsSelected();
     }
-
     public void parksSelected(){
         getParksJSON = new GetParksJSON();
         GetParksJSON.GetParks getp = getParksJSON.new GetParks();
