@@ -26,7 +26,7 @@ import java.util.ListIterator;
 
 public class MapsLocation extends FragmentActivity implements OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener, GetWashroomsJSON.AsyncResponse, GetPlaygroundsJSON.AsyncPlayground, GetParksJSON.AsyncResponseParks,
-        GetOffleashJSON.AsyncResponseLeash{
+        GetOffleashJSON.AsyncResponseLeash, GetSportsfieldsJSON.AsyncSportsfield{
 
     private GoogleMap mMap;
     private ArrayList<Marker> marker;
@@ -35,6 +35,7 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
     private GetPlaygroundsJSON getPlayGroundsJSON;
     private GetParksJSON getParksJSON;
     private GetOffleashJSON getOffleashJSON;
+    private GetSportsfieldsJSON getSportsfieldsJSON;
     private String infoType;
 
 
@@ -56,10 +57,18 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
             getParksJSON.delegate = this;
             getp.execute();
         }
+
         else if(info == 1){
             getOffleashJSON = new GetOffleashJSON();
             GetOffleashJSON.GetParks getp = getOffleashJSON. new GetParks();
             getOffleashJSON.delegate = this;
+            getp.execute();
+        }
+        else if(info == 2){
+            getSportsfieldsJSON = new GetSportsfieldsJSON();
+            GetSportsfieldsJSON.GetSportsfields getp = getSportsfieldsJSON.new GetSportsfields();
+            getSportsfieldsJSON.delegate = this;
+            infoType = "sportsfield";
             getp.execute();
         }
         else if(info == 3) {
@@ -104,6 +113,19 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
         for(int n = 0; n < washrooms.size(); n++) {
             Log.e("longitude", String.valueOf(getWashroomsJSON.getWashroomList().size()));
             myMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(washrooms.get(n).longitute, washrooms.get(n).lattitude)));
+            marker.add(myMarker);
+            mMap.setOnMarkerClickListener(this);
+        }
+
+
+    }
+    public void processFinishSportsfield(){
+        List<Sportsfield> sportsfields = getSportsfieldsJSON.getSportsfieldList();
+        LatLng newWest = new LatLng(49.193788,-122.9314024);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newWest, 13));
+
+        for(int n = 0; n < sportsfields.size(); n++) {
+            myMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(sportsfields.get(n).longitude, sportsfields.get(n).latitude)));
             marker.add(myMarker);
             mMap.setOnMarkerClickListener(this);
         }

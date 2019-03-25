@@ -78,9 +78,9 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback, Ge
             dMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(avgLat, avgLong), 14));
 
         }
-        parksSelected();
-        leashSelected();
-        playSelected();
+        //parksSelected();
+        //leashSelected();
+        //playSelected();
         washroomSelected();
     }
     public void parksSelected(){
