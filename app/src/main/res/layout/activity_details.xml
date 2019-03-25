@@ -45,11 +45,12 @@
 
     <ListView
         android:id="@+id/list2"
+        android:choiceMode="singleChoice"
+        android:listSelector="#666666"
         android:layout_width="255dp"
         android:layout_height="197dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintHorizontal_bias="0.0"

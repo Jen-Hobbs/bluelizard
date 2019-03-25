@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -61,10 +62,14 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback, Ge
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, values);
         list.setAdapter(adapter);
 
+        list.setSelector(R.color.LightGreen);
+        list.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View v, int position, long l) {
+
                 if (position == 0) {
+
                     clearSelected();
                     parksSelected();
                 } else if (position == 1) {
