@@ -28,6 +28,19 @@
             android:name="com.google.android.gms.maps.SupportMapFragment"/>
     </LinearLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView"
+        android:layout_marginBottom="8dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/mapLayout"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/mapLayout"
+        app:layout_constraintTop_toBottomOf="@+id/mapLayout"
+        app:layout_constraintVertical_bias="0.267"/>
+
     <ListView
         android:id="@+id/list2"
         android:layout_width="255dp"
@@ -36,10 +49,10 @@
         android:layout_marginBottom="8dp"
 
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/mapLayout"
+        app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/mapLayout"
-        app:layout_constraintTop_toBottomOf="@+id/mapLayout"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintVertical_bias="0.267"/>
 
 </android.support.constraint.ConstraintLayout>

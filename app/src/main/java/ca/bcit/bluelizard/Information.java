@@ -17,7 +17,7 @@ public class Information extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_information);
         ListView list = (ListView) findViewById(R.id.list);
-        String[] values = new String[]{"Park", "Off Leash Area", "Athletics", "Playground", "Washrooms"
+        String[] values = new String[]{"Parks", "Off Leash Areas", "Athletics", "Playgrounds", "Washrooms"
         };
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, values);
         list.setAdapter(adapter);
