@@ -69,7 +69,6 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback, Ge
             public void onItemClick(AdapterView<?> adapterView, View v, int position, long l) {
 
                 if (position == 0) {
-
                     clearSelected();
                     parksSelected();
                 } else if (position == 1) {

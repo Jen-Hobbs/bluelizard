@@ -101,14 +101,14 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        LatLng newWest = new LatLng(49.193788,-122.9314024);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newWest, 13));
 
     }
 
 
     public void processFinish(){
         List<Washroom> washrooms = getWashroomsJSON.getWashroomList();
-        LatLng newWest = new LatLng(49.193788,-122.9314024);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newWest, 13));
 
         for(int n = 0; n < washrooms.size(); n++) {
             Log.e("longitude", String.valueOf(getWashroomsJSON.getWashroomList().size()));
@@ -121,8 +121,6 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
     }
     public void processFinishSportsfield(){
         List<Sportsfield> sportsfields = getSportsfieldsJSON.getSportsfieldList();
-        LatLng newWest = new LatLng(49.193788,-122.9314024);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newWest, 13));
 
         for(int n = 0; n < sportsfields.size(); n++) {
             myMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(sportsfields.get(n).longitude, sportsfields.get(n).latitude)));
@@ -134,8 +132,7 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
     }
     public void processFinishPlayground(){
         List<Playground> playgrounds = getPlayGroundsJSON.getPlaygroundList();
-        LatLng newWest = new LatLng(49.193788,-122.9314024);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newWest, 13));
+
         for(int n = 0; n < playgrounds.size(); n++) {
             Log.e("longitude", String.valueOf(getPlayGroundsJSON.getPlaygroundList().size()));
             myMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(playgrounds.get(n).longitude, playgrounds.get(n).latitude)));
@@ -147,8 +144,6 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
     }
     public void processFinishLeash(){
         List<Park> park = getOffleashJSON.getParkList();
-        LatLng newWest = new LatLng(49.193788,-122.9314024);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newWest, 13));
 
         for(int j = 0; j < park.size(); j++) {
             double avgLat = 0;
@@ -170,7 +165,7 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
             }
             avgLong /= count;
             avgLat /= count;
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(avgLat, avgLong), 13));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(avgLat, avgLong), 14));
             mMap.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener(){
                 public void onPolygonClick(Polygon polygon){
                     Intent intent = new Intent(MapsLocation.this, Details.class);
@@ -191,8 +186,7 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
     }
     public void processFinishParks(){
         List<Park> park = getParksJSON.getParkList();
-        LatLng newWest = new LatLng(49.193788,-122.9314024);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newWest, 13));
+
         for(int j = 0; j < park.size(); j++){
             double avgLat = 0;
             double avgLong = 0;
