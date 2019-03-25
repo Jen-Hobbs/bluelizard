@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Details extends AppCompatActivity implements OnMapReadyCallback, GetWashroomsJSON.AsyncResponse, GetPlaygroundsJSON.AsyncPlayground, GetParksJSON.AsyncResponseParks,
-        GetOffleashJSON.AsyncResponseLeash {
+        GetOffleashJSON.AsyncResponseLeash, GetFountainsJSON.AsyncFountain {
 
     private GoogleMap dMap;
     private double[] lat;
@@ -29,6 +29,7 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback, Ge
     private GetPlaygroundsJSON getPlayGroundsJSON;
     private GetParksJSON getParksJSON;
     private GetOffleashJSON getOffleashJSON;
+    private GetFountainsJSON getFountainsJSON;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +83,8 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback, Ge
         //parksSelected();
         //leashSelected();
         //playSelected();
-        washroomSelected();
+        //washroomSelected();
+        fountainsSelected();
     }
     public void parksSelected(){
         getParksJSON = new GetParksJSON();
@@ -108,7 +110,12 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback, Ge
         getWashroomsJSON.delegate = this;
         get.execute();
     }
-
+    public void fountainsSelected(){
+        getFountainsJSON = new GetFountainsJSON();
+        GetFountainsJSON.GetFountains get = getFountainsJSON.new GetFountains();
+        getFountainsJSON.delegate = this;
+        get.execute();
+    }
     public void processFinish(){
         List<Washroom> washrooms = getWashroomsJSON.getWashroomList();
         for(int n = 0; n < washrooms.size(); n++) {
@@ -126,6 +133,12 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback, Ge
         }
 
 
+    }
+    public void processFinishFountain(){
+        List<Fountain> fountains = getFountainsJSON.getFountainList();
+        for(int n = 0; n < fountains.size(); n++) {
+            dMap.addMarker(new MarkerOptions().position(new LatLng(fountains.get(n).longitude, fountains.get(n).latitude)));
+        }
     }
     public void processFinishLeash(){
         List<Park> park = getOffleashJSON.getParkList();
