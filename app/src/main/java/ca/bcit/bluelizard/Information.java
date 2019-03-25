@@ -27,10 +27,18 @@ public class Information extends AppCompatActivity {
                 Intent intent = new Intent(v.getContext(), MapsLocation.class);
                 intent.putExtra("location", l);
                 startActivityForResult(intent, 0);
+
             }
         });
+        //testSports();
     } //end onCreate
-
+/*
+    public void testSports() {
+        GetFountainsJSON s = new GetFountainsJSON();
+        GetFountainsJSON.GetFountains sg = s.new GetFountains();
+        sg.execute();
+    }
+    */
 
 }//end Information
 
