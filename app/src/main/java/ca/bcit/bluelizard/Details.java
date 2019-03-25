@@ -57,7 +57,7 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback, Ge
         ListView list = findViewById(R.id.list2);
         String[] values = new String[]{"Parks", "Off Leash Areas", "Athletics", "Playgrounds", "Washrooms", "Drinking Fountains"
         };
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, values);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, values);
         list.setAdapter(adapter);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -71,6 +71,8 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback, Ge
                     playSelected();
                 } else if (position == 4) {
                     washroomSelected();
+                } else if (position == 5) {
+                    fountainsSelected();
                 }
             }
         });
@@ -114,7 +116,7 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback, Ge
         //leashSelected();
         //playSelected();
         //washroomSelected();
-        fountainsSelected();
+        //fountainsSelected();
     }
 
     public void parksSelected(){
