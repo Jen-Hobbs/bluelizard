@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Details extends AppCompatActivity implements OnMapReadyCallback, GetWashroomsJSON.AsyncResponse, GetPlaygroundsJSON.AsyncPlayground, GetParksJSON.AsyncResponseParks,
-        GetOffleashJSON.AsyncResponseLeash, GetFountainsJSON.AsyncFountain {
+        GetOffleashJSON.AsyncResponseLeash, GetFountainsJSON.AsyncFountain, GetSportsfieldsJSON.AsyncSportsfield {
 
     private GoogleMap dMap;
     private double[] lat;
@@ -35,6 +35,7 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback, Ge
     private GetParksJSON getParksJSON;
     private GetOffleashJSON getOffleashJSON;
     private GetFountainsJSON getFountainsJSON;
+    private GetSportsfieldsJSON getSportsfieldsJSON;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +70,20 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback, Ge
                 } else if (position == 1) {
                     clearSelected();
                     leashSelected();
+                } else if(position == 2) {
+                    clearSelected();
+                    sportsfieldsSelected();
                 } else if (position == 3) {
                     clearSelected();
                     playSelected();
                 } else if (position == 4) {
                     clearSelected();
                     washroomSelected();
+                } else if(position == 5){
+                    clearSelected();
+                    fountainsSelected();
                 }
+
             }
         });
 
@@ -131,6 +139,12 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback, Ge
         getParksJSON.delegate = this;
         getp.execute();
     }
+    public void sportsfieldsSelected(){
+        getSportsfieldsJSON = new GetSportsfieldsJSON();
+        GetSportsfieldsJSON.GetSportsfields getp = getSportsfieldsJSON.new GetSportsfields();
+        getSportsfieldsJSON.delegate = this;
+        getp.execute();
+    }
     public void leashSelected(){
         getOffleashJSON = new GetOffleashJSON();
         GetOffleashJSON.GetParks getp = getOffleashJSON. new GetParks();
@@ -160,6 +174,14 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback, Ge
         for(int n = 0; n < washrooms.size(); n++) {
             Log.e("longitude", String.valueOf(getWashroomsJSON.getWashroomList().size()));
             dMap.addMarker(new MarkerOptions().position(new LatLng(washrooms.get(n).longitute, washrooms.get(n).lattitude)));
+        }
+
+
+    }
+    public void processFinishSportsfield(){
+        List<Sportsfield> sportsfields = getSportsfieldsJSON.getSportsfieldList();
+        for(int n = 0; n < sportsfields.size(); n++) {
+            dMap.addMarker(new MarkerOptions().position(new LatLng(sportsfields.get(n).longitude, sportsfields.get(n).latitude)));
         }
 
 
