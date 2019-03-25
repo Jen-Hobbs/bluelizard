@@ -1,6 +1,7 @@
 package ca.bcit.bluelizard;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -69,7 +70,7 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback, Ge
                 avgLong += lon[i];
             }
             dMap.addPolygon(
-                    new PolygonOptions().add(point).fillColor(0x55588266)
+                    new PolygonOptions().add(point).fillColor(0x55588266).strokeWidth(3).strokeColor(Color.rgb(35, 91, 31))
             );
             avgLong /= count;
             avgLat /= count;
@@ -136,7 +137,7 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback, Ge
                 }
                 LatLng[] point = locations.toArray(new LatLng[locations.size()]);
                 dMap.addPolygon(
-                        new PolygonOptions().add(point).fillColor(0x55588266)
+                        new PolygonOptions().add(point).fillColor(0x55588266).strokeWidth(3).strokeColor(Color.rgb(35, 91, 31))
                 );
 
             }
@@ -153,7 +154,7 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback, Ge
                 }
                 LatLng[] point = locations.toArray(new LatLng[locations.size()]);
                 dMap.addPolygon(
-                        new PolygonOptions().add(point).fillColor(0x55588266)
+                        new PolygonOptions().add(point).fillColor(0x55588266).strokeWidth(3).strokeColor(Color.rgb(35, 91, 31))
                 );
 
             }

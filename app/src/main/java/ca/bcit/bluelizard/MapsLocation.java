@@ -164,7 +164,7 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
                 }
                 LatLng[] point = locations.toArray(new LatLng[locations.size()]);
                 mMap.addPolygon(
-                        new PolygonOptions().add(point).fillColor(0x55588266).clickable(true)
+                        new PolygonOptions().add(point).fillColor(0x55588266).clickable(true).strokeWidth(3).strokeColor(Color.rgb(35, 91, 31))
                 );
 
             }
@@ -207,7 +207,7 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
                 }
                 LatLng[] point = locations.toArray(new LatLng[locations.size()]);
                 mMap.addPolygon(
-                        new PolygonOptions().add(point).fillColor(0x55588266).clickable(true)
+                        new PolygonOptions().add(point).fillColor(0x55588266).clickable(true).strokeWidth(3).strokeColor(Color.rgb(35, 91, 31))
                 );
 
             }
