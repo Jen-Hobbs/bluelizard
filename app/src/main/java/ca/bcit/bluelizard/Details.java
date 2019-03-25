@@ -5,6 +5,11 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -43,7 +48,32 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback, Ge
         lon = getIntent().getDoubleArrayExtra("longitude");
         type = getIntent().getStringExtra("type");
 
+        // Sets the text view for each category
+        TextView category = findViewById(R.id.textView);
+        String cat = "Category: " + type;
+        category.setText(cat);
 
+        // List view of all the categories
+        ListView list = findViewById(R.id.list2);
+        String[] values = new String[]{"Parks", "Off Leash Areas", "Athletics", "Playgrounds", "Washrooms", "Drinking Fountains"
+        };
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, values);
+        list.setAdapter(adapter);
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View v, int position, long l) {
+                if (position == 0) {
+                    parksSelected();
+                } else if (position == 1) {
+                    leashSelected();
+                } else if (position == 3) {
+                    playSelected();
+                } else if (position == 4) {
+                    washroomSelected();
+                }
+            }
+        });
 
     }
 
@@ -86,6 +116,7 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback, Ge
         //washroomSelected();
         fountainsSelected();
     }
+
     public void parksSelected(){
         getParksJSON = new GetParksJSON();
         GetParksJSON.GetParks getp = getParksJSON.new GetParks();
