@@ -208,14 +208,7 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
                     startActivity(intent);
                 }
             });
-
-
-
         }
-
-
-
-
     }
 
     @Override
