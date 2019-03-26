@@ -1,10 +1,13 @@
 package ca.bcit.bluelizard;
+/**
+ * Map Activity that displays information about parks
+ */
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.util.Log;
+
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -15,14 +18,12 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
+
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+
 import java.util.List;
-import java.util.ListIterator;
+
 
 public class MapsLocation extends FragmentActivity implements OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener, GetWashroomsJSON.AsyncResponse, GetPlaygroundsJSON.AsyncPlayground, GetParksJSON.AsyncResponseParks,
@@ -39,15 +40,18 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
     private String infoType;
     private List<Sportsfield> sportsfields;
 
-
+    /**
+     * creationg of map class. gets info from previous intent and based on that instantiates
+     * different jsons to get data from either Parks, Offleash areas, athletics, playgournds,
+     * or washrooms
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         marker = new ArrayList<>();
         setContentView(R.layout.activity_maps_location);
         long info = getIntent().getLongExtra("location", 0);
-        Log.e("location", "hi");
-        Log.e("location", String.valueOf(info));
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -98,6 +102,7 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
+     * move Camera to newwest
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -107,12 +112,14 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-
+    /**
+     * once the thread in json to retreave data is finished markers are made on the map for washromms
+     * based on that data
+     */
     public void processFinish(){
         List<Washroom> washrooms = getWashroomsJSON.getWashroomList();
 
         for(int n = 0; n < washrooms.size(); n++) {
-            Log.e("longitude", String.valueOf(getWashroomsJSON.getWashroomList().size()));
             myMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(washrooms.get(n).longitute, washrooms.get(n).lattitude)));
             marker.add(myMarker);
             mMap.setOnMarkerClickListener(this);
@@ -120,6 +127,10 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
 
 
     }
+    /**
+     * once the thread in json to retreave data is finished markers are made on the map for sportsfields
+     * based on that data
+     */
     public void processFinishSportsfield(){
         sportsfields = getSportsfieldsJSON.getSportsfieldList();
 
@@ -131,11 +142,14 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
 
 
     }
+    /**
+     * once the thread in json to retreave data is finished markers are made on the map for playgrounds
+     * based on that data
+     */
     public void processFinishPlayground(){
         List<Playground> playgrounds = getPlayGroundsJSON.getPlaygroundList();
 
         for(int n = 0; n < playgrounds.size(); n++) {
-            Log.e("longitude", String.valueOf(getPlayGroundsJSON.getPlaygroundList().size()));
             myMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(playgrounds.get(n).longitude, playgrounds.get(n).latitude)));
             marker.add(myMarker);
             mMap.setOnMarkerClickListener(this);
@@ -143,33 +157,28 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
 
 
     }
+
+    /**
+     *once the thread in json to retreave data is finished polygons are made on the map for ofleash areas
+     * based on that data
+     */
     public void processFinishLeash(){
         final List<Park> park = getOffleashJSON.getParkList();
 
         for(int j = 0; j < park.size(); j++) {
-            double avgLat = 0;
-            double avgLong = 0;
-            int count = 0;
+
             for (int i = 0; i < park.get(j).coordinates.size(); i++) {
                 ArrayList<LatLng> locations = new ArrayList<>();
                 for (int n = 0; n < park.get(j).coordinates.get(i).size(); n++) {
                     locations.add(new LatLng(park.get(j).coordinates.get(i).get(n).get(1), park.get(j).coordinates.get(i).get(n).get(0)));
-                    avgLong += park.get(j).coordinates.get(i).get(n).get(0);
-                    avgLat += park.get(j).coordinates.get(i).get(n).get(1);
-                    count++;
                 }
                 LatLng[] point = locations.toArray(new LatLng[locations.size()]);
                 mMap.addPolygon(
                         new PolygonOptions().add(point).fillColor(0x55588266).clickable(true).strokeWidth(3).strokeColor(Color.rgb(35, 91, 31))
                 );
-
             }
-            avgLong /= count;
-            avgLat /= count;
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(avgLat, avgLong), 14));
             mMap.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener(){
                 public void onPolygonClick(Polygon polygon){
-                    String name;
                     Intent intent = new Intent(MapsLocation.this, Details.class);
                     List<LatLng> latLngs = polygon.getPoints();
                     double[] lat = new double[latLngs.size()];
@@ -195,20 +204,18 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
             });
         }
     }
+    /**
+     *once the thread in json to retreave data is finished polygons are made on the map for park areas
+     * based on that data
+     */
     public void processFinishParks(){
         final List<Park> park = getParksJSON.getParkList();
 
         for(int j = 0; j < park.size(); j++){
-            double avgLat = 0;
-            double avgLong = 0;
-            int count = 0;
             for(int i = 0; i < park.get(j).coordinates.size(); i++){
                 ArrayList<LatLng> locations = new ArrayList<>();
                 for(int n = 0; n < park.get(j).coordinates.get(i).size(); n++){
                     locations.add(new LatLng(park.get(j).coordinates.get(i).get(n).get(1), park.get(j).coordinates.get(i).get(n).get(0)));
-                    avgLong += park.get(j).coordinates.get(i).get(n).get(0);
-                    avgLat += park.get(j).coordinates.get(i).get(n).get(1);
-                    count++;
                 }
                 LatLng[] point = locations.toArray(new LatLng[locations.size()]);
                 mMap.addPolygon(
@@ -216,9 +223,6 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
                 );
 
             }
-            avgLong /= count;
-            avgLat /= count;
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(avgLat, avgLong), 13));
             mMap.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener(){
                 public void onPolygonClick(Polygon polygon){
                     Intent intent = new Intent(MapsLocation.this, Details.class);
@@ -246,16 +250,17 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    /**
+     * when a marker is selected it finds the data it relates to and creats a new intent on this
+     * @param mark marker on map
+     * @return false
+     */
     @Override
     public boolean onMarkerClick(final Marker mark){
-        Log.e("marker started", String.valueOf(mark.getPosition()));
         for(int i = 0; i < marker.size(); i++) {
-            Log.e("mymarker started", String.valueOf(marker.get(i).getPosition()));
 
             if (mark.equals(marker.get(i))) {
-                Log.e("marker started", String.valueOf(mark.getPosition()));
                 Intent intent = new Intent(MapsLocation.this, Details.class);
-                List<LatLng> latLngs = new ArrayList<>();
                 double[] lat = new double[1];
                 double[] lon = new double[1];
                 lat[0] = mark.getPosition().latitude;
