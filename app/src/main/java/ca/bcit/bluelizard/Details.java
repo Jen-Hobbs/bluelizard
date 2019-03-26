@@ -1,6 +1,5 @@
 package ca.bcit.bluelizard;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,7 +17,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 
 import java.util.ArrayList;
@@ -28,7 +26,7 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback, Ge
         GetOffleashJSON.AsyncResponseLeash, GetFountainsJSON.AsyncFountain, GetSportsfieldsJSON.AsyncSportsfield {
     /**
      * name has name of park and leash area
-     * category has categor of park and leash area
+     * category has category of park and leash area
      * activities is an array that has what the sportsfields are used for
      * Please check for null as they are only filled for specific categories
      */
@@ -39,6 +37,7 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback, Ge
     private String category;
     private String[] activities;
     String type;
+    private String desName;
     private GetWashroomsJSON getWashroomsJSON;
     private GetPlaygroundsJSON getPlayGroundsJSON;
     private GetParksJSON getParksJSON;
@@ -60,11 +59,34 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback, Ge
         name = getIntent().getStringExtra("name");
         category = getIntent().getStringExtra("category");
         activities = getIntent().getStringArrayExtra("activities");
-        System.out.println("third activity" + name);
+
+        // Sets the name view for each category depending if the value is null or not
+        TextView description = findViewById(R.id.nameView);
+        if (name != null) {
+            desName = "Name: " + name;
+            description.setText(desName);
+        } else if (category != null) {
+            desName = "Category: " + category;
+            description.setText(desName);
+        } else if (activities != null){
+            StringBuilder desAct = new StringBuilder();
+            desAct.append("Activities: ");
+            for (int i = 0; i < activities.length; i++) {
+                if (!activities[i].equals("null")) {
+                    desAct.append(activities[i]);
+                    desAct.append(" ");
+                }
+            }
+            description.setText(desAct);
+        } else {
+            description.setText("");
+        }
+
         // Sets the text view for each category
         TextView category = findViewById(R.id.textView);
         String cat = "Category: " + type;
         category.setText(cat);
+
 
         // List view of all the categories
         ListView list = findViewById(R.id.list2);
