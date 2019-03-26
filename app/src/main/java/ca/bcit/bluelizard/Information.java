@@ -9,6 +9,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+/**
+ * Information activity that has the app image and a list view of different categories
+ * Sends the intent to the map
+ */
 public class Information extends AppCompatActivity {
 
     @Override
@@ -30,15 +34,7 @@ public class Information extends AppCompatActivity {
 
             }
         });
-        //testSports();
     } //end onCreate
-/*
-    public void testSports() {
-        GetFountainsJSON s = new GetFountainsJSON();
-        GetFountainsJSON.GetFountains sg = s.new GetFountains();
-        sg.execute();
-    }
-    */
 
 }//end Information
 
