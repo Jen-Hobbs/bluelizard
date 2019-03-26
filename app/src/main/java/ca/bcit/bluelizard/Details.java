@@ -26,10 +26,18 @@ import java.util.List;
 
 public class Details extends AppCompatActivity implements OnMapReadyCallback, GetWashroomsJSON.AsyncResponse, GetPlaygroundsJSON.AsyncPlayground, GetParksJSON.AsyncResponseParks,
         GetOffleashJSON.AsyncResponseLeash, GetFountainsJSON.AsyncFountain, GetSportsfieldsJSON.AsyncSportsfield {
-
+    /**
+     * name has name of park and leash area
+     * category has categor of park and leash area
+     * activities is an array that has what the sportsfields are used for
+     * Please check for null as they are only filled for specific categories
+     */
     private GoogleMap dMap;
     private double[] lat;
     private double[] lon;
+    private String name;
+    private String category;
+    private String[] activities;
     String type;
     private GetWashroomsJSON getWashroomsJSON;
     private GetPlaygroundsJSON getPlayGroundsJSON;
@@ -49,7 +57,10 @@ public class Details extends AppCompatActivity implements OnMapReadyCallback, Ge
         lat = getIntent().getDoubleArrayExtra("latitude");
         lon = getIntent().getDoubleArrayExtra("longitude");
         type = getIntent().getStringExtra("type");
-
+        name = getIntent().getStringExtra("name");
+        category = getIntent().getStringExtra("category");
+        activities = getIntent().getStringArrayExtra("activities");
+        System.out.println("third activity" + name);
         // Sets the text view for each category
         TextView category = findViewById(R.id.textView);
         String cat = "Category: " + type;

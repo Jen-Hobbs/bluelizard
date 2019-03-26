@@ -37,6 +37,7 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
     private GetOffleashJSON getOffleashJSON;
     private GetSportsfieldsJSON getSportsfieldsJSON;
     private String infoType;
+    private List<Sportsfield> sportsfields;
 
 
     @Override
@@ -120,7 +121,7 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
 
     }
     public void processFinishSportsfield(){
-        List<Sportsfield> sportsfields = getSportsfieldsJSON.getSportsfieldList();
+        sportsfields = getSportsfieldsJSON.getSportsfieldList();
 
         for(int n = 0; n < sportsfields.size(); n++) {
             myMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(sportsfields.get(n).longitude, sportsfields.get(n).latitude)));
@@ -143,7 +144,7 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
 
     }
     public void processFinishLeash(){
-        List<Park> park = getOffleashJSON.getParkList();
+        final List<Park> park = getOffleashJSON.getParkList();
 
         for(int j = 0; j < park.size(); j++) {
             double avgLat = 0;
@@ -168,13 +169,23 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(avgLat, avgLong), 14));
             mMap.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener(){
                 public void onPolygonClick(Polygon polygon){
+                    String name;
                     Intent intent = new Intent(MapsLocation.this, Details.class);
                     List<LatLng> latLngs = polygon.getPoints();
                     double[] lat = new double[latLngs.size()];
                     double[] lon = new double[latLngs.size()];
                     for(int i = 0; i < latLngs.size(); i++){
+
                         lat[i] = latLngs.get(i).latitude;
                         lon[i] = latLngs.get(i).longitude;
+                    }
+                    for(int i = 0; i < park.size(); i++){
+                        for(int x = 0; x < park.get(i).coordinates.size(); x++) {
+                            if (park.get(i).coordinates.get(x).get(0).get(1) == lat[0] && park.get(i).coordinates.get(x).get(0).get(0) == lon[0]) {
+                                intent.putExtra("name", park.get(i).name);
+                                intent.putExtra("category", park.get(i).category);
+                            }
+                        }
                     }
                     intent.putExtra("latitude", lat);
                     intent.putExtra("longitude", lon);
@@ -185,7 +196,7 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
         }
     }
     public void processFinishParks(){
-        List<Park> park = getParksJSON.getParkList();
+        final List<Park> park = getParksJSON.getParkList();
 
         for(int j = 0; j < park.size(); j++){
             double avgLat = 0;
@@ -218,6 +229,14 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
                         lat[i] = latLngs.get(i).latitude;
                         lon[i] = latLngs.get(i).longitude;
                     }
+                    for(int i = 0; i < park.size(); i++){
+                        for(int x = 0; x < park.get(i).coordinates.size(); x++) {
+                            if (park.get(i).coordinates.get(x).get(0).get(1) == lat[0] && park.get(i).coordinates.get(x).get(0).get(0) == lon[0]) {
+                                intent.putExtra("name", park.get(i).name);
+                                intent.putExtra("category", park.get(i).category);
+                            }
+                        }
+                    }
                     intent.putExtra("latitude", lat);
                     intent.putExtra("longitude", lon);
                     intent.putExtra("type", "park");
@@ -230,7 +249,6 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
     @Override
     public boolean onMarkerClick(final Marker mark){
         Log.e("marker started", String.valueOf(mark.getPosition()));
-
         for(int i = 0; i < marker.size(); i++) {
             Log.e("mymarker started", String.valueOf(marker.get(i).getPosition()));
 
@@ -242,7 +260,14 @@ public class MapsLocation extends FragmentActivity implements OnMapReadyCallback
                 double[] lon = new double[1];
                 lat[0] = mark.getPosition().latitude;
                 lon[0] = mark.getPosition().longitude;
-
+                if(infoType.equals("sportsfield")){
+                    for(int x = 0; x < sportsfields.size(); x++){
+                        if(sportsfields.get(i).latitude == lon[0] && sportsfields.get(i).longitude == lat[0]){
+                            String[] activities = sportsfields.get(i).activities.toArray(new String[sportsfields.get(i).activities.size()]);
+                            intent.putExtra("activities", activities);
+                        }
+                    }
+                }
                 intent.putExtra("latitude", lat);
                 intent.putExtra("longitude", lon);
                 intent.putExtra("type", infoType);
