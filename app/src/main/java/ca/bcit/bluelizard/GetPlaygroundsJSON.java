@@ -9,7 +9,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Class to pull JSON data for playgrounds
+ */
 public class GetPlaygroundsJSON {
     public interface AsyncPlayground {
         void processFinishPlayground();
@@ -60,8 +62,6 @@ public class GetPlaygroundsJSON {
 
                         List<Double> coordinates =  new ArrayList<Double>();
 
-                        //ADD ALL DOUBLES TO THE ARRAYLSIT AHHHH
-                        //Arraylist :)
                         for(int j = 0; j < jsonArrayCoordinates.length(); j++)
                         {
                             Double temp2 = jsonArrayCoordinates.getDouble(j);

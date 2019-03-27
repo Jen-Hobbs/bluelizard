@@ -10,7 +10,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
+/**
+ * Class to pull JSON data for sportsfields
+ */
 public class GetSportsfieldsJSON {
 
     public interface AsyncSportsfield {
@@ -64,8 +66,6 @@ public class GetSportsfieldsJSON {
 
                         List<Double> coordinates =  new ArrayList<Double>();
 
-                        //ADD ALL DOUBLES TO THE ARRAYLSIT AHHHH
-                        //Arraylist :)
                         for(int j = 0; j < jsonArrayCoordinates.length(); j++)
                         {
                             Double temp2 = jsonArrayCoordinates.getDouble(j);
@@ -75,7 +75,6 @@ public class GetSportsfieldsJSON {
                         //properties node is a JSON Object
                         JSONObject jsonObjProperties = temp.getJSONObject("properties");
                         List<String> activities = new ArrayList<>();
-                        //its one string wtf
                         String activitiesString = jsonObjProperties.getString("ACTIVITIES");
 
                        //Add all strings to the arraylist
@@ -85,7 +84,6 @@ public class GetSportsfieldsJSON {
                             String temp3 = s.next();
                             activities.add(temp3);
                         }
-                        // Creating a new ca.bcit.bluelizard.Sportsfield object
                         Sportsfield sportsfield = new Sportsfield();
                         sportsfield.latitude = coordinates.get(0);
                         sportsfield.longitude = coordinates.get(1);
@@ -98,7 +96,7 @@ public class GetSportsfieldsJSON {
             } else {
                 Log.e(TAG, "Couldn't get json from server.");
             }
-            return null; // return added
+            return null;
         }
 
         @Override

@@ -1,14 +1,7 @@
 package ca.bcit.bluelizard;
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ListView;
-import android.widget.Toast;
-
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,7 +9,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Class to pull JSON data for washrooms
+ */
 public class GetWashroomsJSON {
     public interface AsyncResponse {
         void processFinish();
@@ -26,8 +21,6 @@ public class GetWashroomsJSON {
     // URL to get contacts JSON
     private static String SERVICE_URL = "http://opendata.newwestcity.ca/downloads/accessible-public-washrooms/WASHROOMS.json";
     private static ArrayList<Washroom> washroomList = new ArrayList<>();
-
-
 
     /**
      * Async task class to get json by making HTTP call
@@ -72,14 +65,12 @@ public class GetWashroomsJSON {
                         //store coordinates in a temporary ArrayList
                         List<Double> coordinates =  new ArrayList<Double>();
 
-                        //ADD ALL DOUBLES TO THE ARRAYLSIT AHHHH
                         for(int j = 0; j < jsonArrayCoordinates.length(); j++)
                         {
                             Double temp2 = jsonArrayCoordinates.getDouble(j);
                             coordinates.add(temp2);
                         }
 
-                        //make new Washroom object
                         Washroom washroom = new Washroom();
                         //add data to washroom datamembers (lat, long)
                         washroom.lattitude = coordinates.get(0);
@@ -100,7 +91,6 @@ public class GetWashroomsJSON {
         protected void onPostExecute(List<Washroom> result) {
             super.onPostExecute(result);
             delegate.processFinish();
-            Log.e("washroom size", String.valueOf(result.size()));
         }
     }
 

@@ -78,7 +78,6 @@ public class GetParksJSON {
                                 for(int c = 0; c < jsonArrayCoordinatesInnerInner.length(); c++) {
                                     if(jsonArrayCoordinatesInnerInner.get(c) instanceof Double) {
                                         Double tempDouble = jsonArrayCoordinatesInnerInner.getDouble(c);
-                                        Log.e("coord1st", tempDouble.toString());
                                         innerInnerList.add(tempDouble);
                                     } else {
                                         JSONArray jsonArrayCoordinatesInnerInnerInner = jsonArrayCoordinatesInnerInner.getJSONArray(c);
@@ -86,7 +85,6 @@ public class GetParksJSON {
                                         {
                                             isMultiple = true;
                                             Double tempDouble2 = jsonArrayCoordinatesInnerInnerInner.getDouble(d);
-                                            Log.e("coord2nd", tempDouble2.toString());
                                             innerInnerList.add(tempDouble2);
                                         }if(isMultiple) {
                                             innerList.add(innerInnerList);
@@ -100,21 +98,11 @@ public class GetParksJSON {
                             crazyList.add(innerList);
                         }
 
-                        //Properties node is a JSON Object
+                        //grab properties
                         JSONObject jsonObjProperties = temp.getJSONObject("properties");
-                        //Name node is a JSON Object
                         String name = jsonObjProperties.getString("Name");
-                        //String name = jsonObjProperties.toString();
-                        Log.e("Parkname", name);
 
-                        //Category node is a JSON Object
-                        //JSONObject jsonObjCategory = jsonObjProperties.getJSONObject("Category");
-                        //String category = jsonObjCategory.toString();
                         String category = jsonObjProperties.getString("Category");
-                        Log.e("Category", category);
-
-
-                        //make new Washroom object
                         Park park = new Park();
                         //add data to washroom datamembers (lat, long)
                         park.name = name;

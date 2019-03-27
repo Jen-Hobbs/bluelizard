@@ -1,10 +1,7 @@
 package ca.bcit.bluelizard;
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,13 +10,18 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Class to pull JSON data for Offleash areas coordinates
+ */
+
 public class GetOffleashJSON {
     public interface AsyncResponseLeash {
         void processFinishLeash();
     }
     public AsyncResponseLeash delegate = null;
     private String TAG = Information.class.getSimpleName();
-    // URL to get contacts JSON
+    // URL to get offleash areas JSON
     private static String SERVICE_URL = "http://opendata.newwestcity.ca/downloads/off-leash-dog-areas/OFFLEASH_DOG_AREAS.json";
     private ArrayList<Park> offLeashList = new ArrayList<>();
 
@@ -62,7 +64,7 @@ public class GetOffleashJSON {
                         //Coordinates node is a JSON Array
                         JSONArray jsonArrayCoordinates = jsonObjGeometry.getJSONArray("coordinates");
                         //There is a nested array
-                        List<List<List<Double>>> crazyList = new ArrayList<>();
+                        List<List<List<Double>>> list = new ArrayList<>();
                         List<List<Double>> innerList = new ArrayList<>();
                         List<Double> innerInnerList = new ArrayList<>();
 
@@ -91,35 +93,23 @@ public class GetOffleashJSON {
                                         }if(isMultiple) {
                                             innerList.add(innerInnerList);
                                         }
-                                    }//end else
-                                }//end for int c
+                                    }
+                                }
                                 if(!isMultiple) {
                                     innerList.add(innerInnerList);
                                 }
-                            }//end for int b
-                            crazyList.add(innerList);
+                            }
+                            list.add(innerList);
                         }
 
-                        //Properties node is a JSON Object
+
                         JSONObject jsonObjProperties = temp.getJSONObject("properties");
-                        //Name node is a JSON Object
                         String name = jsonObjProperties.getString("Name");
-                        //String name = jsonObjProperties.toString();
-                        Log.e("Areaname", name);
-
-                        //Category node is a JSON Object
-                        //JSONObject jsonObjCategory = jsonObjProperties.getJSONObject("Category");
-                        //String category = jsonObjCategory.toString();
                         String category = jsonObjProperties.getString("Category");
-                        Log.e("Category", category);
-
-
-                        //make new Washroom object
                         Park park = new Park();
-                        //add data to washroom datamembers (lat, long)
                         park.name = name;
                         park.category = category;
-                        park.coordinates = crazyList;
+                        park.coordinates = list;
                         //add washroom object to arrayList
                         offLeashList.add(park);
                     }
@@ -129,7 +119,7 @@ public class GetOffleashJSON {
             } else {
                 Log.e(TAG, "Couldn't get json from server.");
             }
-            return null; // return added
+            return null;
         }
 
         @Override

@@ -9,7 +9,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Class to pull JSON data for Water Fountain coordinates
+ */
 public class GetFountainsJSON {
     public interface AsyncFountain {
         void processFinishFountain();
@@ -43,7 +45,7 @@ public class GetFountainsJSON {
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
 
-                    // Getting root JSON Array node
+                    // Getting features JSONArray node
                     JSONArray jsonArrayFeatures = null;
                     try {
                         jsonArrayFeatures = jsonObj.getJSONArray("features");
@@ -51,7 +53,7 @@ public class GetFountainsJSON {
                         e.printStackTrace();
                     }
 
-                    // looping through All Contacts
+                    // looping through all features
                     for (int i = 0; i < jsonArrayFeatures.length(); i++) {
                         JSONObject temp = jsonArrayFeatures.getJSONObject(i);
                         //Geometry node is a JSON Object
@@ -59,9 +61,6 @@ public class GetFountainsJSON {
                         JSONArray jsonArrayCoordinates = jsonObjGeometry.getJSONArray("coordinates");
 
                         List<Double> coordinates =  new ArrayList<Double>();
-
-                        //ADD ALL DOUBLES TO THE ARRAYLSIT AHHHH
-                        //Arraylist :)
                         for(int j = 0; j < jsonArrayCoordinates.length(); j++)
                         {
                             Double temp2 = jsonArrayCoordinates.getDouble(j);
@@ -69,10 +68,11 @@ public class GetFountainsJSON {
                             coordinates.add(temp2);
                         }
 
-                        // Creating a new Fountain object
+                        //Create a new Fountain object
                         Fountain fountain = new Fountain();
                         fountain.latitude = coordinates.get(0);
                         fountain.longitude = coordinates.get(1);
+                        //add fountain to list
                         fountainList.add(fountain);
                     }
                 } catch (final JSONException e) {
@@ -81,7 +81,7 @@ public class GetFountainsJSON {
             } else {
                 Log.e(TAG, "Couldn't get json from server.");
             }
-            return null; // return added
+            return null;
         }
 
         @Override
