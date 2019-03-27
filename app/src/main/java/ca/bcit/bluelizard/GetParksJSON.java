@@ -40,8 +40,6 @@ public class GetParksJSON {
             // Making a request to url and getting response
             String jsonStr = sh.makeServiceCall(SERVICE_URL);
 
-            Log.e(TAG, "Response from url: " + jsonStr);
-
             if (jsonStr != null) {
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);

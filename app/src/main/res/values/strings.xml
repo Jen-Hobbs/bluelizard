@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">bluelizard</string>
+    <string name="app_name">InfoParks</string>
     <string name="title_activity_maps_location">Map</string>
     <string name="title_activity_test">test</string>
     <string name="title_parks">InfoParks</string>
